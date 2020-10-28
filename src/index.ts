@@ -1,8 +1,8 @@
-const express = require("express");
+import express = require("express");
 const app = express();
-const bodyParser = require("body-parser");
-const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
+import bodyParser = require("body-parser");
+import swaggerUi = require("swagger-ui-express");
+import swaggerDocument = require("./swagger.json");
 require("dotenv/config");
 
 app.use(bodyParser.json());

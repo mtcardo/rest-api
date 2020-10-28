@@ -1,6 +1,7 @@
-const express = require("express");
+import express = require("express");
 const router = express.Router();
-const uuid = require("uuid");
+import uuid = require("uuid");
+import { Request, Response, NextFunction } from "express";
 
 let placeholderObject = [
     {
@@ -23,17 +24,21 @@ let placeholderObject = [
     },
 ];
 
-router.get("/", (req, res) => res.json(placeholderObject));
+router.get("/", (req: Request, res: Response, next: NextFunction) => {
+    res.json(placeholderObject);
+    next();
+});
 
-router.get("/:id", (req, res) =>
+router.get("/:id", (req: Request, res: Response, next: NextFunction) => {
     res.json(
         placeholderObject.find(
             (notification) => notification.id === req.params.id
         )
-    )
-);
+    );
+    next();
+});
 
-router.post("/", (req, res) => {
+router.post("/", (req: Request, res: Response, next: NextFunction) => {
     const newNotification = {
         id: uuid.v4(),
         senderId: req.body.senderId,
@@ -42,21 +47,26 @@ router.post("/", (req, res) => {
     };
     placeholderObject.push(newNotification);
     res.json(newNotification);
+    next();
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req: Request, res: Response, next: NextFunction) => {
     placeholderObject = placeholderObject.filter(
         (notification) => notification.id !== req.params.id
     );
     res.json(placeholderObject);
+    next();
 });
 
-router.patch("/:id", (req, res) => {
+router.patch("/:id", (req: Request, res: Response, next: NextFunction) => {
     const uneditedNotification = placeholderObject.find(
         (notification) => notification.id === req.params.id
     );
+    if (!uneditedNotification) {
+        throw new Error("Notification could not be found.");
+    }
     const patchedNotification = {
-        id: uneditedNotification.id,
+        id: uneditedNotification?.id,
         senderId: req.body.senderId || uneditedNotification.senderId,
         receiverId: req.body.receiverId || uneditedNotification.receiverId,
         text: req.body.text || uneditedNotification.text,
@@ -66,6 +76,7 @@ router.patch("/:id", (req, res) => {
     );
     placeholderObject.push(patchedNotification);
     res.json(patchedNotification);
+    next();
 });
 
 module.exports = router;
