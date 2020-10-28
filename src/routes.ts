@@ -5,8 +5,8 @@ const setNotificationController = (app: express.Application) => {
     const baseUrl = "/notification";
     const controller = new NotificationController();
 
-    app.get(`${baseUrl}/`, (res: Response) => {
-        res.json(controller.list);
+    app.get(`${baseUrl}/`, (req: Request, res: Response) => {
+        res.json(controller.list());
     });
 
     app.get(`${baseUrl}/:id`, (req: Request, res: Response) =>
