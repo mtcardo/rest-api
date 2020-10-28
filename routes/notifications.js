@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const uuid = require("uuid");
 
-const placeholderObject = [
+let placeholderObject = [
     {
         id: "9303c8bc-7a91-44a3-ba3b-311f867655fa",
         senderId: 12345678,
@@ -27,7 +27,7 @@ router.get("/", (req, res) => res.json(placeholderObject));
 
 router.get("/:id", (req, res) =>
     res.json(
-        placeholderObject.filter(
+        placeholderObject.find(
             (notification) => notification.id === req.params.id
         )
     )
@@ -42,6 +42,30 @@ router.post("/", (req, res) => {
     };
     placeholderObject.push(newNotification);
     res.json(newNotification);
+});
+
+router.delete("/:id", (req, res) => {
+    placeholderObject = placeholderObject.filter(
+        (notification) => notification.id !== req.params.id
+    );
+    res.json(placeholderObject);
+});
+
+router.patch("/:id", (req, res) => {
+    const uneditedNotification = placeholderObject.find(
+        (notification) => notification.id === req.params.id
+    );
+    const patchedNotification = {
+        id: uneditedNotification.id,
+        senderId: req.body.senderId || uneditedNotification.senderId,
+        receiverId: req.body.receiverId || uneditedNotification.receiverId,
+        text: req.body.text || uneditedNotification.text,
+    };
+    placeholderObject = placeholderObject.filter(
+        (notification) => notification.id !== req.params.id
+    );
+    placeholderObject.push(patchedNotification);
+    res.json(patchedNotification);
 });
 
 module.exports = router;
