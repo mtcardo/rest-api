@@ -1,14 +1,22 @@
-import express = require("express");
-const app = express();
-import bodyParser = require("body-parser");
-import swaggerUi = require("swagger-ui-express");
-import swaggerDocument = require("./swagger.json");
+import * as bodyParser from "body-parser";
+import * as swaggerDocument from "./swagger.json";
+import * as swaggerUi from "swagger-ui-express";
+import express, { Request, Response, NextFunction } from "express";
+import configureRoutes from "./routes";
+
 require("dotenv/config");
+
+const app = express();
 
 app.use(bodyParser.json());
 
-const notificationsRoute = require("./routes/notifications");
-app.use("/notifications", notificationsRoute);
+const bodyLogger = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body);
+    next();
+};
+app.use(bodyLogger);
+
+configureRoutes(app);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const port = process.env.PORT || 5000;
