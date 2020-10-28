@@ -1,0 +1,17 @@
+version: "2"
+services:
+    api:
+        container_name: rest-api
+        image: rest-api
+        build: ./docker/develop
+        ports:
+            - "5001:5000"
+        env_file:
+            - .env
+        volumes:
+            - .:/rest-api
+
+networks:
+    default:
+        external:
+            name: rest
