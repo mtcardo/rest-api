@@ -6,8 +6,8 @@ services:
         build: ./docker/develop
         ports:
             - "5001:5000"
-        env_file:
-            - .env
+        environment:
+            -
         volumes:
             - .:/rest-api
 
