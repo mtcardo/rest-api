@@ -1,0 +1,130 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "",
+        "version": "1.0.0",
+        "title": "Swagger Rest API",
+        "termsOfService": "",
+        "contact": {
+            "email": "mtcardo@icloud.com"
+        },
+        "license": {
+            "name": "MIT License",
+            "url": "https://mit-license.org"
+        }
+    },
+    "host": "",
+    "basePath": "/v2",
+    "tags": [
+        {
+            "name": "notifications",
+            "description": "Text, send, done.",
+            "externalDocs": {
+                "description": "Read more",
+                "url": "http://mtcardo.me"
+            }
+        }
+    ],
+    "schemes": ["https", "http"],
+    "paths": {
+        "/notifications": {
+            "get": {
+                "tags": ["notifications"],
+                "summary": "Find every single notification.",
+                "description": "",
+                "operationId": "getNotifications",
+                "produces": ["application/xml", "application/json"],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "",
+                        "required": true,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/Notification"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Notification"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value"
+                    }
+                }
+            },
+            "post": {
+                "tags": ["notifications"],
+                "summary": "Add a new notification.",
+                "description": "",
+                "operationId": "addNotification",
+                "consumes": ["application/json", "application/xml"],
+                "produces": ["application/xml", "application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Notification object that needs to be added.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Notification"
+                        }
+                    }
+                ],
+                "responses": {
+                    "405": {
+                        "description": "Invalid input"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": ["write:pets", "read:pets"]
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {
+        "Notification": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "format": "string",
+                    "example": "e54c5abe-81ff-451e-8205-3ad0a35b9e45"
+                },
+                "senderId": {
+                    "type": "integer",
+                    "format": "number",
+                    "example": "12345678"
+                },
+                "receiverId": {
+                    "type": "integer",
+                    "format": "number",
+                    "example": "87654321"
+                },
+                "text": {
+                    "type": "string",
+                    "format": "string",
+                    "example": "Arroy!"
+                }
+            },
+            "xml": {
+                "name": "Notification"
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "Find out more about Swagger",
+        "url": "http://swagger.io"
+    }
+}
