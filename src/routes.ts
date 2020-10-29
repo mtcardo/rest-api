@@ -26,7 +26,7 @@ const setNotificationController = (app: express.Application) => {
 
     app.put(`${baseUrl}/:id`, (req: Request, res: Response) => {
         res.json(
-            controller.post({
+            controller.put({
                 id: req.params.id,
                 senderId: req.body.senderId,
                 receiverId: req.body.receiverId,
